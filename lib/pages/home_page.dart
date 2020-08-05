@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 250),
+                      duration: Duration(milliseconds: 200),
                       margin: EdgeInsets.only(left: paddingLeft),
                       width: 150,
                       height: 75,
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                             child: ClipPath(
                               clipper: AppClipper(),
                               child: Container(
-                                width: 150,
+                                width: 150,           //이동 화살표 영역 크기
                                 height: 60,
                                 color: AppColors.greenColor,
                               ),
@@ -129,15 +129,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMenu(String menu, int index) {
+  Widget _buildMenu(String menu, int index) {      //좌측 메뉴
     return GestureDetector(
       onTap: () {
         setState(() {
-          paddingLeft = index * 150.0;
+          paddingLeft = index * 110.0;           //메뉴 클릭 시 화살표 이동 거리
         });
       },
       child: Container(
-        width: 150,
+        width: 115,                              // 좌측 메뉴간 간격
         padding: EdgeInsets.only(top: 16),
         child: Center(
           child: Text(
@@ -151,17 +151,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildRightSection() {
+  Widget _buildRightSection() {       //메인 화면 우측 부분
     return Padding(
       padding: const EdgeInsets.only(top: 25),
       child: Column(
         children: <Widget>[
           _customAppBar(),
           Expanded(
-            child: ListView(
+            child: ListView(        //메인화면 우측 전체 ListView
               children: <Widget>[
-                Container(
-                  height: 350,
+                Container(        //메인화면 우측 상단의 좌우 스크롤되는 부분
+                  height: 350,   //우측 상단 좌우 스크롤 화면의 높이
                   child: PageView.builder(
                     physics: BouncingScrollPhysics(),
                     itemCount: foodList.length,
@@ -171,12 +171,12 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => DetailPage(foodList[index]),
+                              builder: (_) => DetailPage(foodList[index]),    // 메뉴를 클릭하면 상세 화면으로 이동
                             ),
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 40),
+                          padding: const EdgeInsets.only(right: 20),   //메인화면 우측 상단 슬라이드 메뉴의 폭을 결정
                           child: Stack(
                             children: <Widget>[
                               _buildBackGround(index),
@@ -184,17 +184,17 @@ class _HomePageState extends State<HomePage> {
                                 alignment: Alignment.topRight,
                                 child: Transform.rotate(
                                   angle: math.pi / 3,
-                                  child: Hero(
+                                  child: Hero(           //애니메이션 효과 위젯, tag 속성 반드시 필요
                                     tag: "image${foodList[index].imgPath}",
                                     child: Image(
-                                      width: 180,
+                                      width: 180,           // 음식 이미지 크기
                                       image: AssetImage(
                                           "assets/${foodList[index].imgPath}"),
                                     ),
                                   ),
                                 ),
                               ),
-                              Positioned(
+                              Positioned(      // 메뉴 하단에 가격 표시
                                 bottom: 0,
                                 right: 30,
                                 child: Container(
@@ -281,10 +281,13 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               SizedBox(width: 10),
-              Text(
-                "(120 Reviews)",
-                style: TextStyle(
-                  fontSize: 12,
+              Flexible(         // 텍스트가 영역을 벗어날 경우 플렉서블로 감쌈
+                child: Text(
+                  "(120 Reviews)",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ],
@@ -308,12 +311,13 @@ class _HomePageState extends State<HomePage> {
       itemCount: foodList.length,
       padding: EdgeInsets.only(
         left: 40,
+      //  right: 5,
         bottom: 16,
         top: 20,
       ),
       itemBuilder: (context, index) {
         return Container(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(10),
           margin: EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
             color: Colors.grey.withOpacity(.2),
@@ -322,43 +326,49 @@ class _HomePageState extends State<HomePage> {
               bottomLeft: Radius.circular(12),
             ),
           ),
-          child: Row(
+          child: Row(         // Row 위젯의 크기를 지정할 수는 없는가?
             children: <Widget>[
               Image(
                 width: 100,
                 image: AssetImage("assets/${foodList[index].imgPath}"),
               ),
               SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "${foodList[index].name}",
-                    style: TextStyle(
-                      fontSize: 20,
+              Flexible(      //해당 컬럼 전체에 Flexible을 걸어주면 됨.
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "${foodList[index].name}",
+                      overflow: TextOverflow.ellipsis, //글자수가 영역을 넘어갈 때
+                     //   softWrap: true,  //글자수가 영역을 넘어갈 때 줄바꿈
+                     // maxLines: 2,  // 글자 줄 수 지정
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "\$${foodList[index].price.toInt()}",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: AppColors.redColor,
-                          fontWeight: FontWeight.bold,
+                    SizedBox(height: 4),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "\$${foodList[index].price.toInt()}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppColors.redColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+
                         ),
-                      ),
-                      SizedBox(width: 16),
-                      Text(
-                        "(${foodList[index].weight.toInt()}gm Weight)",
-                        style: TextStyle(
-                          fontSize: 12,
+                        SizedBox(width: 16),
+                        Text(
+                          "(${foodList[index].weight.toInt()}gm Weight)",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               )
             ],
           ),
@@ -367,7 +377,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _customAppBar() {
+  Widget _customAppBar() {               //상단 앱바
     return Container(
       padding: EdgeInsets.all(16),
       child: Row(

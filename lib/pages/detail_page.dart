@@ -17,16 +17,17 @@ class _DetailPageState extends State<DetailPage> {
       backgroundColor: AppColors.greenColor,
       body: Column(
         children: <Widget>[
-          SizedBox(height: 25),
+          SizedBox(height: 15),
           _customAppBar(),
           Container(
-            height: 270,
+            height: 200,                            //상단 이미지 크기
             width: MediaQuery.of(context).size.width,
             child: Stack(
               children: <Widget>[
                 Image(
                   image: AssetImage("assets/bg.png"),
                 ),
+                // SizedBox(height: 16),
                 Align(
                   alignment: Alignment.center,
                   child: Hero(
@@ -39,6 +40,9 @@ class _DetailPageState extends State<DetailPage> {
               ],
             ),
           ),
+
+
+          SizedBox(height: 16),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -48,18 +52,18 @@ class _DetailPageState extends State<DetailPage> {
                   topRight: Radius.circular(40),
                 ),
               ),
-              padding: EdgeInsets.all(28),
+              padding: EdgeInsets.all(22),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     "${widget.data.name}",
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 12),
                   Row(
                     children: <Widget>[
                       Text(
@@ -100,7 +104,7 @@ class _DetailPageState extends State<DetailPage> {
                       Expanded(
                         child: RaisedButton(
                           onPressed: () {},
-                          padding: EdgeInsets.symmetric(vertical: 16),
+                          padding: EdgeInsets.symmetric(vertical: 10),
                           color: AppColors.greenColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
@@ -110,7 +114,7 @@ class _DetailPageState extends State<DetailPage> {
                           child: Text(
                             "Add to Cart",
                             style: TextStyle(
-                              fontSize: 28,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -148,7 +152,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _customAppBar() {
+  Widget _customAppBar() {         // 상단 앱바
     return Container(
       padding: EdgeInsets.all(16),
       child: Row(
@@ -190,7 +194,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _buildCounter() {
+  Widget _buildCounter() {       //버튼 카운터
     return Container(
       decoration: BoxDecoration(
         color: AppColors.greenColor,
